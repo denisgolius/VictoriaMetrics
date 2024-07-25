@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Configured as part of the DigitalOcean 1-Click Image build process
+
+myip=$(hostname -I | awk '{print$1}')
+cat <<EOF
+********************************************************************************
+
+Welcome to DigitalOcean's 1-Click VictoriaLogs Droplet.
+To keep this Droplet secure, the UFW firewall is enabled.
+All ports are BLOCKED except 22 (SSH), 80 (HTTP), and 443 (HTTPS), 9428 (VictoriaLogs HTTP)
+
+In a web browser, you can view:
+ * The VictoriaLogs 1-Click Quickstart guide: https://kutt.it/1click-quickstart
+
+On the server:
+  * The default VictoriaLogs root is located at /var/lib/victoria-metrics-data
+  * VictoriaLogs is running on ports: 8428, 8089, 4242, 2003 and they are bound to the local interface.
+
+********************************************************************************
+  # This image includes v0.28.0 release of VictoriaLogs.
+  # See Release notes https://github.com/VictoriaLogs/VictoriaLogs/releases/tag/v1.102.0
+
+  # Welcome to VictoriaLogs droplet!
+
+  # Website:       https://VictoriaLogs.com
+  # Documentation: https://docs.VictoriaLogs.com
+  # VictoriaLogs Github : https://github.com/VictoriaMetrics/VictoriaMetrics
+  # VictoriaLogs Slack Community: https://slack.victoriametrics.com
+  # VictoriaLogs Telegram Community: https://t.me/VictoriaMetrics_en
+  #
+  # VictoriaLogs config:   /etc/victorialogs/single/VictoriaLogs.conf
+
+********************************************************************************
+EOF

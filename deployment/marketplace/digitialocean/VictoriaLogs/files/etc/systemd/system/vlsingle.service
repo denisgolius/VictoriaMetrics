@@ -1,0 +1,29 @@
+[Unit]
+Description=VictoriaLogs is open source user-friendly database for logs from VictoriaMetrics.
+# https://docs.victoriametrics.com/victorialogs/
+After=network.target
+
+[Service]
+Type=simple
+User=victoriametrics
+Group=victoriametrics
+WorkingDirectory=/var/lib/victoria-metrics-data
+StartLimitBurst=5
+StartLimitInterval=0
+Restart=on-failure
+RestartSec=5
+EnvironmentFile=-/etc/victorialogs/single/victorialogs.conf
+ExecStart=/usr/bin/victoria-logs-prod $ARGS
+ExecStop=/bin/kill -s SIGTERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+# See docs https://docs.victoriametrics.com/single-server-victoriametrics/#tuning
+ProtectSystem=full
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=vmsingle
+
+[Install]
+WantedBy=multi-user.target
