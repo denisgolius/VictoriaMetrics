@@ -18,10 +18,10 @@ On the server:
   * VictoriaLogs is running on ports: 9428 and it is bound to the local interface.
 
 ********************************************************************************
-  # This image includes v0.28.0-victorialogs version of VictoriaMetrics. 
-  # See Release notes https://github.com/VictoriaMetrics/VictoriaMetrics/releases/tag/vv0.28.0-victorialogs
+  # This image includes 0.28.0-victorialogs version of VictoriaLogs. 
+  # See Release notes https://github.com/VictoriaMetrics/VictoriaMetrics/releases/tag/v0.28.0-victorialogs
 
-  # Welcome to VictoriaMetrics droplet!
+  # Welcome to VictoriaLogs droplet!
 
   # Website:       https://victoriametrics.com
   # Documentation: https://docs.victoriametrics.com

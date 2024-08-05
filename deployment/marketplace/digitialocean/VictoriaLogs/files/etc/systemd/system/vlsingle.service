@@ -21,8 +21,8 @@ ProtectSystem=full
 LimitNOFILE=1048576
 LimitNPROC=1048576
 LimitCORE=infinity
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 SyslogIdentifier=vmsingle
 
 [Install]
