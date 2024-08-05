@@ -17,7 +17,6 @@ VM operator support in the development process, see https://github.com/VictoriaM
 
 ### Update information on Vendor Portal
 
-
 After packer build finished you need to update a product page.
 
 1. Go to [https://cloud.digitalocean.com/vendorportal](https://cloud.digitalocean.com/vendorportal).

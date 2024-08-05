@@ -5,8 +5,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=victoriametrics
-Group=victoriametrics
+User=victorialogs
+Group=victorialogs
 WorkingDirectory=/var/lib/victoria-logs-data
 StartLimitBurst=5
 StartLimitInterval=0

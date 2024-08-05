@@ -1,4 +1,4 @@
-RELEASE_NAME := vm-oneclick-droplet
+RELEASE_NAME := vl-oneclick-droplet
 VL_VERSION ?= $(shell git describe --abbrev=0 --tags)
 
 .PHONY: $(MAKECMDGOALS)

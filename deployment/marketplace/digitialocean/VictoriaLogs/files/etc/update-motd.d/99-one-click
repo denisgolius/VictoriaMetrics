@@ -11,25 +11,25 @@ To keep this Droplet secure, the UFW firewall is enabled.
 All ports are BLOCKED except 22 (SSH), 80 (HTTP), and 443 (HTTPS), 9428 (VictoriaLogs HTTP)
 
 In a web browser, you can view:
- * The VictoriaLogs 1-Click Quickstart guide: https://kutt.it/1click-quickstart
+ * The VictoriaLogs 1-Click Quickstart guide: https://kutt.it/1click-vlogs-quickstart
 
 On the server:
-  * The default VictoriaLogs root is located at /var/lib/victoria-metrics-data
-  * VictoriaLogs is running on ports: 8428, 8089, 4242, 2003 and they are bound to the local interface.
+  * The default VictoriaLogs root is located at /var/lib/victoria-logs-data
+  * VictoriaLogs is running on ports: 9428 and it is bound to the local interface.
 
 ********************************************************************************
-  # This image includes v0.28.0 release of VictoriaLogs.
-  # See Release notes https://github.com/VictoriaLogs/VictoriaLogs/releases/tag/v1.102.0
+  # This image includes v0.28.0-victorialogs version of VictoriaMetrics. 
+  # See Release notes https://github.com/VictoriaMetrics/VictoriaMetrics/releases/tag/vv0.28.0-victorialogs
 
-  # Welcome to VictoriaLogs droplet!
+  # Welcome to VictoriaMetrics droplet!
 
-  # Website:       https://VictoriaLogs.com
-  # Documentation: https://docs.VictoriaLogs.com
+  # Website:       https://victoriametrics.com
+  # Documentation: https://docs.victoriametrics.com
   # VictoriaLogs Github : https://github.com/VictoriaMetrics/VictoriaMetrics
-  # VictoriaLogs Slack Community: https://slack.victoriametrics.com
-  # VictoriaLogs Telegram Community: https://t.me/VictoriaMetrics_en
-  #
-  # VictoriaLogs config:   /etc/victorialogs/single/VictoriaLogs.conf
+  # VictoriaMetrics Slack Community: https://slack.victoriametrics.com
+  # VictoriaMetrics Telegram Community: https://t.me/VictoriaMetrics_en
+
+  # VictoriaMetrics config:   /etc/victorialogs/single/victorialogs.conf
 
 ********************************************************************************
 EOF
