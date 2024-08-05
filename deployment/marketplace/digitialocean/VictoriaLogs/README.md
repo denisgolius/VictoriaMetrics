@@ -1,50 +1,75 @@
 ## Application summary
 
-VictoriaMetrics is a fast and scalable open source time series database and monitoring solution.
+VictoriaLogs is a fast and scalable open source time series database and monitoring solution.
 
 ## Description
 
-VictoriaMetrics is a free [open source time series database](https://en.wikipedia.org/wiki/Time_series_database) (TSDB) and monitoring solution, designed to collect, store and process real-time metrics.
+[VictoriaLogs](https://docs.victoriametrics.com/victorialogs/)
 
-It supports the [Prometheus](https://en.wikipedia.org/wiki/Prometheus_(software)) pull model and various push protocols ([Graphite](https://en.wikipedia.org/wiki/Graphite_(software)), [InfluxDB](https://en.wikipedia.org/wiki/InfluxDB), OpenTSDB) for data ingestion. It is optimized for storage with high-latency IO, low IOPS and time series with [high churn rate](https://docs.victoriametrics.com/faq/#what-is-high-churn-rate).
+VictoriaLogs is [open source](https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/victoria-logs) user-friendly database for logs from [VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics/).
+ 
+## VictoriaLogs provides the following features:
 
-For reading the data and evaluating alerting rules, VictoriaMetrics supports the PromQL, [MetricsQL](https://docs.victoriametrics.com/metricsql/) and Graphite query languages. VictoriaMetrics Single is fully autonomous and can be used as a long-term storage for time series.
+- VictoriaLogs can accept logs from popular log collectors. See [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/).
+- VictoriaLogs is much easier to set up and operate compared to Elasticsearch and Grafana Loki. See [these docs](https://docs.victoriametrics.com/victorialogs/quickstart/).
+- VictoriaLogs provides easy yet powerful query language with full-text search across all the [log fields](https://docs.victoriametrics.com/victorialogs/keyconcepts/#data-model). See [LogsQL docs](https://docs.victoriametrics.com/victorialogs/logsql/).
+- VictoriaLogs can be seamlessly combined with good old Unix tools for log analysis such as `grep`, `less`, `sort`, `jq`, etc. See [these docs](https://docs.victoriametrics.com/victorialogs/querying/#command-line) for details.
+- VictoriaLogs capacity and performance scales linearly with the available resources (CPU, RAM, disk IO, disk space). It runs smoothly on both Raspberry PI and a server with hundreds of CPU cores and terabytes of RAM.
+- VictoriaLogs can handle up to 30x bigger data volumes than Elasticsearch and Grafana Loki when running on the same hardware. See [these docs](https://docs.victoriametrics.com/victorialogs/#benchmarks).
+- VictoriaLogs supports fast full-text search over high-cardinality [log fields](https://docs.victoriametrics.com/victorialogs/keyconcepts/#data-model) such as `trace_id`, `user_id` and `ip`.
+- VictoriaLogs supports multitenancy - see [these docs](https://docs.victoriametrics.com/victorialogs/#multitenancy).
+- VictoriaLogs supports out-of-order logs’ ingestion aka backfilling.
+- VictoriaLogs supports live tailing for newly ingested logs. See [these docs](https://docs.victoriametrics.com/victorialogs/querying/#live-tailing).
+- VictoriaLogs supports selecting surrounding logs in front and after the selected logs. See [these docs](https://docs.victoriametrics.com/victorialogs/logsql/#stream_context-pipe).
+- VictoriaLogs provides web UI for querying logs - see [these docs](https://docs.victoriametrics.com/victorialogs/querying/#web-ui).
 
-[VictoriaMetrics Single](https://docs.victoriametrics.com/single-server-victoriametrics/) = Hassle-free monitoring solution. Easily handles 10M+ of active time series on a single instance. Perfect for small and medium environments.
+If you have questions about VictoriaLogs, then read [this FAQ](https://docs.victoriametrics.com/victorialogs/faq/). Also feel free asking any questions at [VictoriaMetrics community Slack chat](https://victoriametrics.slack.com/), you can join it via [Slack Inviter](https://slack.victoriametrics.com/).
+ 
+See [Quick start docs](https://docs.victoriametrics.com/victorialogs/quickstart/) for start working with VictoriaLogs.
 
-## Getting started after deploying VictoriaMetrics Single
+## Getting started after deploying VictoriaLogs Single
 
 ### Config
 
 VictoriaMetrics configuration is located at `/etc/victoriametrics/single/scrape.yml` on the droplet.
-This One Click app uses 8428, 2003, 4242 and 8089 ports to accept metrics from different protocols. It's recommended to disable ports for protocols which are not needed. [Ubuntu firewall](https://help.ubuntu.com/community/UFW) can be used to easily disable access for specific ports.
+This One Click app uses 9428 port to accept logs from different log collectors. It's recommended to disable ports for protocols which are not needed. [Ubuntu firewall](https://help.ubuntu.com/community/UFW) can be used to easily disable access for specific ports.
 
-### Scraping metrics
+### [Data ingestion](https://docs.victoriametrics.com/victorialogs/data-ingestion/#log-collectors-and-data-ingestion-formats)
 
-VictoriaMetrics supports metrics scraping in the same way as Prometheus does. Check the configuration file to edit scraping targets. See more details about scraping at [How to scrape Prometheus exporters](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-scrape-prometheus-exporters-such-as-node-exporter).
+[VictoriaLogs](https://docs.victoriametrics.com/victorialogs/) can accept logs from the following log collectors:
 
-### Sending metrics
+-   Syslog, Rsyslog and Syslog-ng - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/syslog/).
+-   Filebeat - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/filebeat/).
+-   Fluentbit - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/fluentbit/).
+-   Logstash - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/logstash/).
+-   Vector - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/vector/).
+-   Promtail (aka Grafana Loki) - see [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/promtail/).
 
-Besides scraping, VictoriaMetrics accepts write requests for various ingestion protocols. This One Click app supports the following protocols:
+The ingested logs can be queried according to [these docs](https://docs.victoriametrics.com/victorialogs/querying/).
 
-- [Datadog](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-send-data-from-datadog-agent), [Influx (telegraph)](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-send-data-from-influxdb-compatible-agents-such-as-telegraf), [JSON](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-import-data-in-json-line-format), [CSV](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-import-csv-data), [Prometheus](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-import-data-in-prometheus-exposition-format)  on port :8428
-- [Graphite (statsd)](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-send-data-from-graphite-compatible-agents-such-as-statsd) on port :2003 tcp/udp
-- [OpenTSDB](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-send-data-from-opentsdb-compatible-agents) on port :4242
-- Influx (telegraph) on port :8089 tcp/udp
+See also:
 
-See more details and examples in [official documentation](https://docs.victoriametrics.com/single-server-victoriametrics/).
+-   [Log collectors and data ingestion formats](https://docs.victoriametrics.com/victorialogs/data-ingestion/#log-collectors-and-data-ingestion-formats).
+-   [Data ingestion troubleshooting](https://docs.victoriametrics.com/victorialogs/data-ingestion/#troubleshooting).
 
-### UI
+### [HTTP APIs](https://docs.victoriametrics.com/victorialogs/data-ingestion/#http-apis)
 
-VictoriaMetrics provides a [User Interface (UI)](https://docs.victoriametrics.com/single-server-victoriametrics/#vmui) for query troubleshooting and exploration. The UI is available at `http://your_droplet_public_ipv4:8428/vmui`. It lets users explore query results via graphs and tables.
+VictoriaLogs supports the following data ingestion HTTP APIs:
 
-To check it, open the following in your browser `http://your_droplet_public_ipv4:8428/vmui` and then enter `vm_app_uptime_seconds` to the Query Field to Execute the Query.
+-   Elasticsearch bulk API. See [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/#elasticsearch-bulk-api).
+-   JSON stream API aka [ndjson](https://jsonlines.org/). See [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/#json-stream-api).
+-   Loki JSON API. See [these docs](https://docs.victoriametrics.com/victorialogs/data-ingestion/#loki-json-api).
 
-Run the following command to query and retrieve a result from VictoriaMetrics Single with `curl`:
+VictoriaLogs accepts optional [HTTP parameters](https://docs.victoriametrics.com/victorialogs/data-ingestion/#http-parameters) at data ingestion HTTP APIs.
 
-```console
-curl -sg http://your_droplet_public_ipv4:8428/api/v1/query_range?query=vm_app_uptime_seconds | jq
-```
+### [Querying](https://docs.victoriametrics.com/victorialogs/querying/#)
+
+[VictoriaLogs](https://docs.victoriametrics.com/victorialogs/) can be queried with [LogsQL](https://docs.victoriametrics.com/victorialogs/logsql/) via the following ways:
+
+-   [Web UI](https://docs.victoriametrics.com/victorialogs/querying/#web-ui) - a web-based UI for querying logs
+-   [Visualization in Grafana](https://docs.victoriametrics.com/victorialogs/querying/#visualization-in-grafana)
+-   [HTTP API](https://docs.victoriametrics.com/victorialogs/querying/#http-api)
+-   [Command-line interface](https://docs.victoriametrics.com/victorialogs/querying/#command-line)
 
 ### Accessing
 

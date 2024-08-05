@@ -6,19 +6,19 @@ variable "token" {
 
 variable "image_id" {
   type        = string
-  default     = "ubuntu-20-04-x64"
+  default     = "ubuntu-24-04-x64"
   description = "DigitalOcean linux image ID."
 }
 
-variable "victoriametrics_version" {
+variable "victorialogs_version" {
   type        = string
-  default     = "${env("VM_VERSION")}"
-  description = "Version number of the desired VictoriaMetrics binary."
+  default     = "${env("VL_VERSION")}"
+  description = "Version number of the desired VictoriaLogs binary."
 }
 
 variable "image_name" {
   type        = string
-  default     = "victoriametrics-snapshot-{{timestamp}}"
+  default     = "victorialogs-snapshot-{{timestamp}}"
   description = "Name of the snapshot created on DigitalOcean."
 }
 
@@ -55,14 +55,14 @@ build {
     ]
   }
 
-  # Install VictoriaMetrics
+  # Install VictoriaLogs
   provisioner "shell" {
     environment_vars = [
-      "VM_VERSION=${var.victoriametrics_version}",
+      "VL_VERSION=${var.victorialogs_version}",
       "DEBIAN_FRONTEND=noninteractive"
     ]
     scripts = [
-      "scripts/04-install-victoriametrics.sh",
+      "scripts/04-install-victorialogs.sh",
     ]
   }
 

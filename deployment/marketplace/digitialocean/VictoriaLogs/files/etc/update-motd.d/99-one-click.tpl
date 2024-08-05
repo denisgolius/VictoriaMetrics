@@ -25,11 +25,11 @@ On the server:
 
   # Website:       https://victoriametrics.com
   # Documentation: https://docs.victoriametrics.com
-  # VictoriaMetrics Github : https://github.com/VictoriaMetrics/VictoriaMetrics
+  # VictoriaLogs Github : https://github.com/VictoriaMetrics/VictoriaMetrics
   # VictoriaMetrics Slack Community: https://slack.victoriametrics.com
   # VictoriaMetrics Telegram Community: https://t.me/VictoriaMetrics_en
 
-  # VictoriaMetrics config:   /etc/victoriametrics/single/victoriametrics.conf
+  # VictoriaMetrics config:   /etc/victorialogs/single/victorialogs.conf
 
 ********************************************************************************
 EOF

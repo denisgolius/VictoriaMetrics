@@ -506,7 +506,7 @@ osv=0
 
 if [[ $OS == "Ubuntu" ]]; then
         ost=1
-    if [[ $VER == "22.10" ]] || [[ $VER == "22.04" ]] || [[ $VER == "20.04" ]] || [[ $VER == "18.04" ]] || [[ $VER == "16.04" ]]; then
+    if [[ $VER == "24.04" ]] || [[ $VER == "22.10" ]] || [[ $VER == "22.04" ]] || [[ $VER == "20.04" ]] || [[ $VER == "18.04" ]] || [[ $VER == "16.04" ]]; then
         osv=1
     fi
 
@@ -521,7 +521,10 @@ elif [[ "$OS" =~ Debian.* ]]; then
             ;;
         11)
             osv=1
-            ;;            
+            ;;
+        12)
+            osv=1
+            ;;
         *)
             osv=2
             ;;
@@ -542,12 +545,14 @@ elif [[ $OS == "CentOS Stream" ]]; then
         ost=1
     if [[ $VER == "8" ]]; then
         osv=1
+    elif [[ $VER == "9" ]]; then
+        osv=1
     else
         osv=2
     fi
 elif [[ $OS == "Rocky Linux" ]]; then
         ost=1
-    if [[ $VER =~ 8\. ]]; then
+    if [[ $VER =~ 8\. ]] || [[ $VER =~ 9\. ]]; then
         osv=1
     else
         osv=2
