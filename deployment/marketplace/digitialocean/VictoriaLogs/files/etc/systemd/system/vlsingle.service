@@ -21,6 +21,7 @@ ProtectSystem=full
 LimitNOFILE=1048576
 LimitNPROC=1048576
 LimitCORE=infinity
+# See why it use 'StandardOutput=journal' at https://github.com/dracutdevs/dracut/issues/986
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=vmsingle
