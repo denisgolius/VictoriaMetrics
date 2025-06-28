@@ -38,6 +38,60 @@ func TestMatchingAddTimeFilter_Parsing(t *testing.T) {
 	}
 }
 
+func TestApplyOptionTimeOffset(t *testing.T) {
+	f := func(s string, expectedStart, expectedEnd int64) {
+		t.Helper()
+		q, err := ParseQueryAtTimestamp(s, 0)
+		if err != nil {
+			t.Fatalf("unexpected error: %s", err)
+		}
+		gotStart, gotEnd := q.GetFilterTimeRange()
+		if gotStart != expectedStart {
+			t.Fatalf("unexpected start time; got %d; want %d", gotStart, expectedStart)
+		}
+		if gotEnd != expectedEnd {
+			t.Fatalf("unexpected end time; got %d; want %d", gotEnd, expectedEnd)
+		}
+	}
+
+	f("options(time_offset=1h) _time:1h", -nsecsPerHour*2, -nsecsPerHour*1)
+	f("options(time_offset=1h) _time:offset 1h", math.MinInt64, -nsecsPerHour*2)
+	f("options(time_offset=1d) _time:[2025-07-01T00:00:00Z, 2025-07-02T00:00:00Z)", 1751241600000000000, 1751327999999999999)
+}
+
+func TestApplyOptionTimeOffsetToSubqueries(t *testing.T) {
+	assertQueryRange := func(q *Query, expectedStart, expectedEnd int64) {
+		t.Helper()
+		gotStart, gotEnd := q.GetFilterTimeRange()
+		if gotStart != expectedStart {
+			t.Fatalf("unexpected start time; got %d; want %d", gotStart, expectedStart)
+		}
+		if gotEnd != expectedEnd {
+			t.Fatalf("unexpected end time; got %d; want %d", gotEnd, expectedEnd)
+		}
+	}
+
+	// subquery
+	q, err := ParseQueryAtTimestamp(`options(time_offset=2h) _time:1h level:in(_time:6h | fields level)`, 0)
+	if err != nil {
+		t.Fatalf("unexpected error: %s", err)
+	}
+	assertQueryRange(q, -nsecsPerHour*3, -nsecsPerHour*2)
+	visitSubqueriesInFilter(q.f, func(q *Query) {
+		assertQueryRange(q, -nsecsPerHour*8, -nsecsPerHour*2)
+	})
+
+	// subquery has its own time_offset
+	q, err = ParseQueryAtTimestamp(`options(time_offset=2h) _time:1h level:in(options(time_offset=1h) _time:6h | fields level)`, 0)
+	if err != nil {
+		t.Fatalf("unexpected error: %s", err)
+	}
+	assertQueryRange(q, -nsecsPerHour*3, -nsecsPerHour*2)
+	visitSubqueriesInFilter(q.f, func(q *Query) {
+		assertQueryRange(q, -nsecsPerHour*7, -nsecsPerHour*1)
+	})
+}
+
 func TestLexer(t *testing.T) {
 	f := func(s string, tokensExpected []string) {
 		t.Helper()
@@ -115,6 +169,9 @@ func TestQuery_AddTimeFilter(t *testing.T) {
 	f(`foo or bar:contains_any(options(ignore_global_time_filter=true) baz | fields bar)`, `_time:[2024-12-25T14:56:43Z,2025-01-13T12:45:34Z] (foo or bar:contains_any(options(ignore_global_time_filter=true) baz | fields bar))`)
 	f(`options(ignore_global_time_filter=true) foo or bar:contains_all(baz | fields bar)`, `options(ignore_global_time_filter=true) foo or bar:contains_all(options(ignore_global_time_filter=true) baz | fields bar)`)
 	f(`foo or bar:contains_all(options(ignore_global_time_filter=true) baz | fields bar)`, `_time:[2024-12-25T14:56:43Z,2025-01-13T12:45:34Z] (foo or bar:contains_all(options(ignore_global_time_filter=true) baz | fields bar))`)
+
+	// global timestamp offset
+	f(`options(time_offset=7d) *`, `_time:[2024-12-25T14:56:43Z,2025-01-13T12:45:34Z] *`)
 
 	// join pipe
 	f(`foo | join by (x) (bar)`, `_time:[2024-12-25T14:56:43Z,2025-01-13T12:45:34Z] foo | join by (x) (_time:[2024-12-25T14:56:43Z,2025-01-13T12:45:34Z] bar)`)
